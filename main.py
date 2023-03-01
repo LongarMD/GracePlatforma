@@ -5,13 +5,14 @@ import database as db
 
 from blueprints.user import user_bp
 from blueprints.room import room_bp
+from blueprints.game import game_bp
 
 app = Flask(__name__)
 app.secret_key = "asdiajoidaj332333"
 
 app.register_blueprint(user_bp, url_prefix='/user')
 app.register_blueprint(room_bp, url_prefix='/room')
-
+app.register_blueprint(game_bp, url_prefix='/game')
 
 @app.route('/')
 def index():

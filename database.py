@@ -106,3 +106,12 @@ def add_message_to_room(username, message, room):
               (username, message, room, date)
              )
     conn.commit()
+
+def is_room_owner(user, room):
+    c.execute("SELECT * FROM rooms WHERE id=? AND room_owner=?", (room, user))
+
+    return len(c.fetchall()) != 0
+
+def remove_user_from_room(user, room):
+    c.execute("DELETE FROM user_in_room WHERE username = ? AND room_id = ?", (user, room))
+    conn.commit()

@@ -20,6 +20,7 @@ function draw() {
     drawLines()
     // drawO(boardWidth / 6, 3 * boardHeight / 6)
     // drawX(boardWidth / 6, boardHeight / 6)
+    background("WHITE")
     drawGame(game)
 }
 

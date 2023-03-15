@@ -9,18 +9,14 @@ let game = [
 ]
 
 let player = "X" // or O
+let nextPlayer = "O"
 
 function setup() {
     createCanvas(boardWidth, boardHeight);
-    //background("RED");
 }
 
 function draw() {
-    // line(250, 0, 250, 800)
     drawLines()
-    // drawO(boardWidth / 6, 3 * boardHeight / 6)
-    // drawX(boardWidth / 6, boardHeight / 6)
-    background("WHITE")
     drawGame(game)
 }
 
@@ -28,12 +24,13 @@ function mouseMoved() {
     let [y, x] = detectPostion(mouseX, mouseY)
     fill("yellow")
     console.log(x, y)
-    rect(x, y, size)
+    drawBackground(x, y)
 }
 
 function mouseClicked() {
      let [y, x] = detectPostion(mouseX, mouseY)
     // if polje že ima X ali O potem nič ne rišemo
+    // preverimo, če smo na vrsti
     if (game[x][y] == "#") {
         game[x][y] = player   
     } else {
@@ -62,17 +59,31 @@ function drawX(x, y) {
 }
 
 function drawO(x, y) {
-    //fill("red")
+    fill("BLACK")
     ellipse(x, y, size)
 }
 
 // želimo da je input takle: [1, 2]
 function drawBackground(a, b) {
 // iz a in b pridimo do končega x in y
-    rect(x, y, size) // or square
-    
-    //drawO(j * boardWidth / 3 + boardWidth / 6, i * boardHeight / 3 + boardHeight / 6)
+    y = a * boardWidth / 3 + boardWidth / 6
+    x = b * boardHeight / 3 + boardHeight / 6
+    fill("GREY")
+    fill('rgba(0, 0, 0, 0.1)')
+    //noStroke()
+    strokeWeight(0)
+    rectMode(CENTER)
+    background("WHITE")
+    if (isEmptyField(a, b)) {
+        rect(x, y, size * 1.4) // or square    
+    }
 }
+
+function isEmptyField(a, b) { // a --> 0 or 1 or 2
+    if (game[a][b] != "#") {
+        return false
+    } return true
+} // vrne true ali false
 
 function drawGame(game) {
     for (let i = 0; i < 3; i++) {
@@ -84,3 +95,19 @@ function drawGame(game) {
         }
     }
 }
+
+async function testGet() {
+    const response = await fetch("#")
+    const data= await response.json();
+    console.log(data)
+    // ... s temi podatki od zgoraj potem updatamo game seznam ...
+let sez = ["#", "O", "X"]
+let a = sez[Math.floor(Math.random() * sez.length)];
+game = [
+    [a, "O", "#"],
+    ["#", "X", "#"],
+    ["O", "O", "O"]
+]
+}
+
+setInterval(testGet, 1000);

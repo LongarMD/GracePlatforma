@@ -95,19 +95,3 @@ function drawGame(game) {
         }
     }
 }
-
-async function testGet() {
-    const response = await fetch("#")
-    const data= await response.json();
-    console.log(data)
-    // ... s temi podatki od zgoraj potem updatamo game seznam ...
-let sez = ["#", "O", "X"]
-let a = sez[Math.floor(Math.random() * sez.length)];
-game = [
-    [a, "O", "#"],
-    ["#", "X", "#"],
-    ["O", "O", "O"]
-]
-}
-
-setInterval(testGet, 1000);

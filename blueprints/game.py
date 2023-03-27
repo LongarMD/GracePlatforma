@@ -24,8 +24,11 @@ def update_tictactoe(game_id):
     new_state = request.form["state"]
     game = db.get_tictactoe(game_id)
 
+    if game is None:
+        return "Bad request", 400
+
     if game['next_player'] != session["current_user"] or game['ended']:
-        return False
+        return "Bad request", 400
 
     # Ali je sprememba stanja legitimna
     # - natanko 1 sprememba
@@ -40,7 +43,7 @@ def update_tictactoe(game_id):
 
             if nov_znak != star_znak: # zgodila se je sprememba
                 if sprememba or star_znak != "#": 
-                    return # ce smo ze prej videli spremembo, ali pa se je spremenilo prej-neprazno polje, koncamo
+                    return "Bad request", 400 # ce smo ze prej videli spremembo, ali pa se je spremenilo prej-neprazno polje, koncamo
                 sprememba = True
 
     game['state'] = new_state
@@ -72,11 +75,14 @@ def update_tictactoe(game_id):
     for sum in diag_sum:
         if sum == "XXX" or sum == "OOO":
             winner = sum[0]
-        
-
-    winner_player = game["player_x"] if winner == "X" else game["player_o"]
-    
 
     # V bazo shranimo spremembe
 
+    next_player = game['player_x'] if game['next_player'] == game['player_o'] else game['player_o']
+    db.update_tictactoe_state(game_id, game['state'], next_player)
+    
+    game['next_player'] = next_player
+
+    if winner is not None:
+        winner_player = game["player_x"] if winner == "X" else game["player_o"]
     

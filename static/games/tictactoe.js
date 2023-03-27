@@ -95,3 +95,12 @@ function drawGame(game) {
         }
     }
 }
+
+
+async function getTictactoe() {
+    let response = await fetch("https://platforma.team-grace.repl.co/game/tictactoe/tictactoe_2")
+    console.log(await response.json())
+}
+
+getTictactoe()
+

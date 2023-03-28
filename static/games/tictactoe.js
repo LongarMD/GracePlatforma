@@ -80,6 +80,7 @@ function drawBackground(a, b) {
 }
 
 function isEmptyField(a, b) { // a --> 0 or 1 or 2
+    console.log("83: " + game[a][b])
     if (game[a][b] != "#") {
         return false
     } return true
@@ -99,8 +100,10 @@ function drawGame(game) {
 
 async function getTictactoe() {
     let response = await fetch("https://platforma.team-grace.repl.co/game/tictactoe/tictactoe_2")
-    console.log(await response.json())
+    let state = (await response.json())["state"]
+    console.log(state)
+    game = state
 }
 
-getTictactoe()
+setInterval(getTictactoe, 1000)
 

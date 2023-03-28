@@ -7,6 +7,7 @@ import string
 conn = sqlite3.connect("database.db", check_same_thread=False)
 c = conn.cursor()
 
+
 def generate_id(table_name, id_field):
 
     while True:
@@ -14,8 +15,9 @@ def generate_id(table_name, id_field):
         c.execute(f'SELECT * FROM {table_name} WHERE {id_field}=?', (id, ))
         if c.fetchone() is None:
             break
-        
+
     return id
+
 
 # function should return all users from db
 def get_users():
@@ -152,7 +154,9 @@ def get_tictactoe(game_id):
 
     if game is None:
         return None
-    
+
+    print(game)
+
     return {
         "game_id": game[0],
         "room_id": game[1],
@@ -164,10 +168,12 @@ def get_tictactoe(game_id):
         "ended": game[7]
     }
 
+
 def update_tictactoe_state(game_id, new_state, next_player):
-    state_str = json.dumps(new_state)
-    
-    c.execute("""
+    state_str = json.dumps({"state": new_state})
+
+    c.execute(
+        """
     UPDATE tictactoe
     SET state=?, next_player=?
     WHERE game_id=?
@@ -175,8 +181,10 @@ def update_tictactoe_state(game_id, new_state, next_player):
 
     conn.commit()
 
+
 def update_tictactoe_winner(game_id, winner_id):
-    c.execute("""
+    c.execute(
+        """
     UPDATE tictactoe
     SET winner=?, ended=?
     WHERE game_id=?
@@ -184,12 +192,13 @@ def update_tictactoe_winner(game_id, winner_id):
 
     conn.commit()
 
+
 def create_tictactoe(room_id, player_x, player_o):
     game_id = generate_id('tictactoe', 'game_id')
 
-    c.execute("""
+    c.execute(
+        """
     INSERT INTO tictactoe
     VALUES(?, ?, ?, ?, '{"state": [["#", "#", "#"], ["#", "#", "#"], ["#", "#", "#"]]}', ?, NULL, false)
     """, (game_id, room_id, player_x, player_o, player_x))
     conn.commit()
-    
